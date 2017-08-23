@@ -14,14 +14,18 @@ app.use(express.static(publicPath));
 
 io.on("connection", (socket) => {
   console.log('New user connected');
+
+  socket.on('createMsg', (newMsg) => {
+    console.log('new Msg created',newMsg);
+
+    socket.emit('newMsg', newMsg);
+    
+  });
+
   socket.on('disconnect', () => {
     console.log('Disconnected !!!!!!');
   });
 });
-
-
-
-
 
 server.listen(port, () => {
   console.log(`Server started on port ${port}`);

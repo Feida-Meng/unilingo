@@ -3,13 +3,12 @@ const http = require('http');
 const path = require('path');
 const socketIO = require('socket.io');
 
-const { generateMsg } = require('./utils/msg');
+const { generateMsg, generateLocationMsg } = require('./utils/msg');
 const publicPath = path.join(__dirname, '../public')
 const port = process.env.PORT || 3000;
 const app = express();
 var server = http.createServer(app);
 var io = socketIO(server);
-
 
 app.use(express.static(publicPath));
 
@@ -32,6 +31,14 @@ io.on("connection", (socket) => {
     // })
   });
 
+//---------------------map link------------------------
+  socket.on('createLocationMessage', (coords) => {
+    io.emit('newLocation',generateLocationMsg('Admin',coords));
+
+  });
+
+
+//---------------------disconnect-----------------------
   socket.on('disconnect', () => {
     console.log('Disconnected !!!!!!');
   });

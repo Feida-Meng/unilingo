@@ -6,4 +6,13 @@ var generateMsg = (from, text) => {
   };
 };
 
-module.exports = {generateMsg};
+var generateLocationMsg = (from, coords) => {
+  return {
+    from,
+    url: `https://www.google.ca/maps?=${coords.latitude},${coords.longitude}`,
+    createdAt: new Date().getTime()
+  };
+
+}
+
+module.exports = {generateMsg, generateLocationMsg};

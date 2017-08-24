@@ -14,9 +14,18 @@ socket.on('newcomer', function(msg) {
 });
 
 socket.on('newMsg',function (newMsg) {
-  console.log("New Msg",newMsg);
-  var li = $('<li></li>');
-  li.text(`${newMsg.from}: ${newMsg.text}` );
+
+  let li = $('<li></li>');
+  li.text(`${newMsg.from}: ${newMsg.text} at ${newMsg.createdAt}` );
+  $('#msgs').append(li);
+});
+
+socket.on('newLocation', function(msg) {
+  let li = $('<li></li>');
+  let mapLink = $('<a target=_blank></a>');
+  mapLink.text(`${msg.from} : User location at ${msg.createdAt}` );
+  mapLink.attr('href', msg.url)
+  li.append(mapLink);
   $('#msgs').append(li);
 });
 
@@ -24,7 +33,7 @@ socket.on('disconnect',function() {
   console.log('Disconnected from server');
 });
 
-$(document).ready(function($) {
+
   $('#msg-form').on('submit', function(e) {
     e.preventDefault();
 
@@ -34,5 +43,21 @@ $(document).ready(function($) {
     }, function(msg) {
       console.log(msg+'Your new msg was received');
     });
+  });
+
+var locationBtn = $('#btn-location');
+locationBtn.on('click', function(e) {
+  if (!navigator.geolocation) {
+    return alert('Geolocation not support by your brower.')
+  }
+
+  navigator.geolocation.getCurrentPosition(function(position) {
+    socket.emit('createLocationMessage', {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    });
+  },function() {
+    alert('Unable to fetch location');
+    // e.g. user decides not to share the location
   });
 });

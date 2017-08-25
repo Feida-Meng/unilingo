@@ -63,17 +63,26 @@ socket.on('disconnect',function() {
   console.log('Disconnected from server');
 });
 
-
-  $('#msg-form').on('submit', function(e) {
-    e.preventDefault();
-    var msgTextBox = $('#msg-input');
-    socket.emit('createMsg',{
-      from: 'User',
-      text: msgTextBox.val()
-    }, function(msg) {
-      msgTextBox.val('');
-    });
+socket.on('updateUserList', function(users) {
+  var ol = $('<ol></ol>');
+  users.forEach(function(user) {
+    ol.append($('<li></li>').text(user));
   });
+  $('#users').html(ol);
+});
+
+
+
+$('#msg-form').on('submit', function(e) {
+  e.preventDefault();
+  var msgTextBox = $('#msg-input');
+  socket.emit('createMsg',{
+    from: 'User',
+    text: msgTextBox.val()
+  }, function(msg) {
+    msgTextBox.val('');
+  });
+});
 
 var locationBtn = $('#btn-location');
 locationBtn.on('click', function(e) {

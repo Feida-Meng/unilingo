@@ -19,16 +19,19 @@ function scrollToBottom() {
 }
 
 socket.on('connect',function() {
-  console.log('connected to server');
+  var params = $.deparam(window.location.search);
+  socket.emit('join', params, function(err) {
+    if (err) {
+      alert(err);
+      window.location.href = '/';
+    } else {
+      console.log('No err');
+    }
+  });
 });
 
 socket.on('greeting',function(msg) {
   console.log(msg.text);
-});
-
-socket.on('newcomer', function(msg) {
-  console.log(msg.text);
-
 });
 
 socket.on('newMsg',function (newMsg) {
@@ -51,11 +54,7 @@ socket.on('newLocation', function(msg) {
     from: msg.from,
     createdAt: formattedTime
   });
-  // let li = $('<li></li>');
-  // let mapLink = $('<a target=_blank></a>');
-  // mapLink.text(`${msg.from} : User location at ${formattedTime}` );
-  // mapLink.attr('href', msg.url)
-  // li.append(mapLink);
+
   $('#msgs').append(html);
   scrollToBottom();
 });

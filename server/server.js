@@ -33,15 +33,22 @@ io.on("connection", (socket) => {
     callback();
   });
 
+//---------------------created msg-------------------------
   socket.on('createMsg', (msg, callback) => {
-    console.log('new Msg created',msg);
-    callback('This is from server: ');
-    io.emit('newMsg',generateMsg(msg.from, msg.text));
+    let user = users.getUser(socket.id);
+    if (user && isRealString(msg.text)) {
+      io.to(user.room).emit('newMsg',generateMsg(user.name, msg.text));
+
+    }
+    callback();
   });
 
 //---------------------map link------------------------
   socket.on('createLocationMessage', (coords) => {
-    io.emit('newLocation',generateLocationMsg('Admin',coords));
+    let user = users.getUser(socket.id);
+    if (user) {
+      io.to(user.room).emit('newLocation',generateLocationMsg(user.name,coords));
+    }
 
   });
 

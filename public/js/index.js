@@ -14,16 +14,17 @@ socket.on('newcomer', function(msg) {
 });
 
 socket.on('newMsg',function (newMsg) {
-
+  var formattedTime = moment(newMsg.createdAt).format('h:mm a');
   let li = $('<li></li>');
-  li.text(`${newMsg.from}: ${newMsg.text} at ${newMsg.createdAt}` );
+  li.text(`${newMsg.from}: ${newMsg.text} at ${formattedTime}` );
   $('#msgs').append(li);
 });
 
 socket.on('newLocation', function(msg) {
+  var formattedTime = moment(msg.createdAt).format('h:mm a');
   let li = $('<li></li>');
   let mapLink = $('<a target=_blank></a>');
-  mapLink.text(`${msg.from} : User location at ${msg.createdAt}` );
+  mapLink.text(`${msg.from} : User location at ${formattedTime}` );
   mapLink.attr('href', msg.url)
   li.append(mapLink);
   $('#msgs').append(li);

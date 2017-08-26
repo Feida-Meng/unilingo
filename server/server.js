@@ -2,10 +2,12 @@ const express = require('express');
 const http = require('http');
 const path = require('path');
 const socketIO = require('socket.io');
+const translate = require('google-translate-api');
 
 const { generateMsg, generateLocationMsg } = require('./utils/msg');
 const { isRealString } = require('./utils/validation');
 const { Users } = require('./utils/users');
+const { langs, isSupported, getCode} = require('./utils/languages');
 const publicPath = path.join(__dirname, '../public')
 const port = process.env.PORT || 3000;
 const app = express();
@@ -22,6 +24,8 @@ io.on("connection", (socket) => {
       return callback('Name and room name are required');
     }
 
+    console.log(langs);
+    socket.emit('lanList',langs); // send lang list to chat.js
     socket.join(params.room);
     users.removeUser(socket.id);
     users.addUser(socket.id,params.name, params.room);
@@ -48,12 +52,15 @@ io.on("connection", (socket) => {
   });
 
 
-//---------------------created msg-------------------------
+//---------------------create msg-------------------------
   socket.on('createMsg', (msg, callback) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(msg.text)) {
-      io.to(user.room).emit('newMsg',generateMsg(user.name, msg.text));
-
+      translate(msg.text, {to: getCode(msg.lan)}).then(res => {
+        io.to(user.room).emit('newMsg',generateMsg(user.name, res.text));
+      }).catch(err => {
+          console.error(err);
+      });
     }
     callback();
   });
@@ -66,7 +73,6 @@ io.on("connection", (socket) => {
     }
 
   });
-
 
 //---------------------disconnect-----------------------
   socket.on('disconnect', () => {

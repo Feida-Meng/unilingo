@@ -20,8 +20,13 @@
       <ol id="msgs" class="chat__messages"></ol>
 
       <div class="chat__footer">
+
+
         <form id="msg-form" action="index.html" method="post">
           <input id="msg-input" name="msg" type="text" placeholder="Message" autofocus autocomplete="off">
+          <select id="lan-list" size=1>
+            <option selected disabled>Output language</option>
+          </select>
           <button class="submit">Send</button>
         </form>
 
@@ -30,10 +35,22 @@
 
     </div>
 
-    <script id="msg-template" type="text/template">
+    <script id="admin-msg-template" type="text/template">
       <li class="message">
         <div class="message__title">
-          <h4>{{from}}</h4>
+          <h4> <img class="img" src="https://i.pinimg.com/736x/52/ba/cf/52bacfb7419bb9b83fb8921fa7cbc487--death-star-tattoo-death-star-art.jpg" alt="Death Star" style="width:30px;height:25px;"> {{from}}</h4>
+          <span>{{createdAt}}</span>
+        </div>
+        <div class="message__body">
+          <p> {{text}} </p>
+        </div>
+      </li>
+    </script>
+
+    <script id="user-msg-template" type="text/template">
+      <li class="message">
+        <div class="message__title">
+          <h4> {{from}}</h4>
           <span>{{createdAt}}</span>
         </div>
         <div class="message__body">

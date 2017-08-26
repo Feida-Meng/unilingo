@@ -146,7 +146,22 @@ button:disabled {
 .chat__footer input {
   border: none;
   padding: 10px;
+
+}
+
+#msg-input {
+  flex-grow: 100;
+}
+
+#lan-list {
   flex-grow: 1;
+  text-align: center;
+  text-align-last: center;
+}
+
+.lan-Opt {
+  text-align: left;
+  /* reset to left*/
 }
 
 .chat__messages {
@@ -191,4 +206,10 @@ button:disabled {
   .chat__footer button {
     margin-right: 0px;
   }
+}
+
+select {
+  text-align: center;
+  text-align-last: center;
+  /* webkit*/
 }

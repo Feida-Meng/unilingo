@@ -33,6 +33,17 @@ io.on("connection", (socket) => {
     callback();
   });
 
+//-----------------------keydown-----------------------------
+socket.on('keydown', (params) => {
+  io.to(params.room).emit('showTyping', socket.id);
+});
+
+//-----------------------keyup-------------------------------
+socket.on('keyup', (params) => {
+  io.to(params.room).emit('hideTyping', socket.id);
+});
+
+
 //---------------------created msg-------------------------
   socket.on('createMsg', (msg, callback) => {
     let user = users.getUser(socket.id);

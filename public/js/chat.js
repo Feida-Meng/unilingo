@@ -15,7 +15,6 @@ function scrollToBottom() {
     msgs.scrollTop(scrollHeight);
   }
 
-
 }
 
 socket.on('connect',function() {
@@ -24,15 +23,13 @@ socket.on('connect',function() {
     if (err) {
       alert(err);
       window.location.href = '/';
-    } else {
-      console.log('No err');
     }
   });
 });
 
-socket.on('greeting',function(msg) {
-  console.log(msg.text);
-});
+// socket.on('greeting',function(msg) {
+//   console.log(msg.text);
+// });
 
 socket.on('newMsg',function (newMsg) {
   var formattedTime = moment(newMsg.createdAt).format('h:mm a');
@@ -66,12 +63,42 @@ socket.on('disconnect',function() {
 socket.on('updateUserList', function(users) {
   var ol = $('<ol></ol>');
   users.forEach(function(user) {
-    ol.append($('<li></li>').text(user));
+    ol.append($('<li></li>').attr('id',user.id).text(user.name));
   });
   $('#users').html(ol);
 });
 
+//---------------keyup---------------------
+$('#msg-input').keyup(function() {
+  console.log('!!!!')
+  var params = $.deparam(window.location.search);
+  socket.emit("keyup", params);
 
+})
+
+//---------------hide Typing--------------------
+socket.on("hideTyping",function(id) {
+  if ($("#i"+id).length > 0) {
+    console.log("#i"+id);
+    $("#i"+id).remove();
+  }
+});
+
+
+//-------------keydown--------------------
+$('#msg-input').keydown(function() {
+  var params = $.deparam(window.location.search);
+  socket.emit('keydown',params);
+});
+
+//-------------show typing--------------------
+socket.on('showTyping', function(id) {
+  if ($("#i"+id).length === 0) {
+    typing = $('<i>  typing ...</i>');
+    typing.attr("id","i"+id);
+    $('#'+id).append(typing);
+  }
+});
 
 $('#msg-form').on('submit', function(e) {
   e.preventDefault();

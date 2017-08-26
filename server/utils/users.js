@@ -24,8 +24,8 @@ class Users {
 
   getUserList(room) {
     let users = this.users.filter((user) => user.room === room );
-    let names = users.map((user) => user.name );
-    return names;
+    // let names = users.map((user) => user.name );
+    return users;
   }
 }
 

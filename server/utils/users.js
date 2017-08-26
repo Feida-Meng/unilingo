@@ -18,6 +18,12 @@ class Users {
     return user;
   }
 
+  getRoomList() {
+    let roomList = {};
+    this.users.forEach((user) => roomList[user.room] = 0);
+    return roomList;
+  }
+
   getUser(id) {
     return this.users.filter((user) => user.id === id)[0]
   }

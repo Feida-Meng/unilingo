@@ -27,10 +27,6 @@ socket.on('connect',function() {
   });
 });
 
-// socket.on('greeting',function(msg) {
-//   console.log(msg.text);
-// });
-
 socket.on('newMsg',function (newMsg) {
   var formattedTime = moment(newMsg.createdAt).format('h:mm a');
   var template = $('#msg-template').html();
@@ -39,6 +35,7 @@ socket.on('newMsg',function (newMsg) {
     from: newMsg.from,
     createdAt: formattedTime
   });
+  
   $('#msgs').append(html);
   scrollToBottom();
 });
@@ -62,7 +59,7 @@ socket.on('disconnect',function() {
 
 socket.on('updateUserList', function(users) {
   var ol = $('<ol></ol>');
-  users.forEach(function(user) {
+  users.userList.forEach(function(user) {
     ol.append($('<li></li>').attr('id',user.id).text(user.name));
   });
   $('#users').html(ol);

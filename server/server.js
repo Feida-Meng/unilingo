@@ -17,7 +17,6 @@ app.use(express.static(publicPath));
 
 io.on("connection", (socket) => {
   console.log('New user connected');
-
   socket.on('join',(params, callback) => {
     if(!isRealString(params.name) || !isRealString(params.room)) {
       return callback('Name and room name are required');
@@ -27,21 +26,26 @@ io.on("connection", (socket) => {
     users.removeUser(socket.id);
     users.addUser(socket.id,params.name, params.room);
 
-    io.to(params.room).emit('updateUserList', users.getUserList(params.room));
-    socket.emit('greeting',generateMsg('Admin','Welcome to the chatting room!!'));
+    io.emit('updateRoomList',users.getRoomList());
+    io.to(params.room).emit('updateUserList', {
+      userList:users.getUserList(params.room),
+      id: socket.id,
+    });
+    socket.emit('newMsg',generateMsg('Admin','Welcome to the chatting room!!'));
     socket.broadcast.to(params.room).emit('newMsg',generateMsg('Admin',`${params.name} has joined the room ${params.room}`));
     callback();
   });
+  io.emit('updateRoomList',users.getRoomList());
 
-//-----------------------keydown-----------------------------
-socket.on('keydown', (params) => {
-  io.to(params.room).emit('showTyping', socket.id);
-});
+  //-----------------------keydown-----------------------------
+  socket.on('keydown', (params) => {
+    io.to(params.room).emit('showTyping', socket.id);
+  });
 
-//-----------------------keyup-------------------------------
-socket.on('keyup', (params) => {
-  io.to(params.room).emit('hideTyping', socket.id);
-});
+  //-----------------------keyup-------------------------------
+  socket.on('keyup', (params) => {
+    io.to(params.room).emit('hideTyping', socket.id);
+  });
 
 
 //---------------------created msg-------------------------
@@ -68,9 +72,11 @@ socket.on('keyup', (params) => {
   socket.on('disconnect', () => {
     console.log('Disconnected !!!!!!');
     let user = users.removeUser(socket.id);
-
+    io.emit('updateRoomList',users.getRoomList());
     if (user) {
-      io.to(user.room).emit('updateUserList',users.getUserList(user.room));
+      io.to(user.room).emit('updateUserList',{
+        userList: users.getUserList(user.room)
+      });
       io.to(user.room).emit('newMsg',generateMsg('Admin', `${user.name} has left.`))
 
     }

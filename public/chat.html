@@ -30,10 +30,22 @@
 
     </div>
 
-    <script id="msg-template" type="text/template">
+    <script id="admin-msg-template" type="text/template">
       <li class="message">
         <div class="message__title">
-          <h4>{{from}}</h4>
+          <h4> <img class="img" src={{imgSrc}} alt="Death Star" style="width:30px;height:25px;"> {{from}}</h4>
+          <span>{{createdAt}}</span>
+        </div>
+        <div class="message__body">
+          <p> {{text}} </p>
+        </div>
+      </li>
+    </script>
+
+    <script id="user-msg-template" type="text/template">
+      <li class="message">
+        <div class="message__title">
+          <h4> {{from}}</h4>
           <span>{{createdAt}}</span>
         </div>
         <div class="message__body">

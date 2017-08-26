@@ -29,13 +29,16 @@ socket.on('connect',function() {
 
 socket.on('newMsg',function (newMsg) {
   var formattedTime = moment(newMsg.createdAt).format('h:mm a');
-  var template = $('#msg-template').html();
+  var template = newMsg.from !== "Admin" ? $('#user-msg-template').html() : $('#admin-msg-template').html();
+  var imgSrc = "http://photos.planetadeagostini.es/t17/r/81/2081.jpg";
+
   var html = Mustache.render(template, {
     text: newMsg.text,
     from: newMsg.from,
-    createdAt: formattedTime
+    createdAt: formattedTime,
+    imgSrc: imgSrc
   });
-  
+
   $('#msgs').append(html);
   scrollToBottom();
 });
@@ -67,7 +70,6 @@ socket.on('updateUserList', function(users) {
 
 //---------------keyup---------------------
 $('#msg-input').keyup(function() {
-  console.log('!!!!')
   var params = $.deparam(window.location.search);
   socket.emit("keyup", params);
 
@@ -76,7 +78,6 @@ $('#msg-input').keyup(function() {
 //---------------hide Typing--------------------
 socket.on("hideTyping",function(id) {
   if ($("#i"+id).length > 0) {
-    console.log("#i"+id);
     $("#i"+id).remove();
   }
 });

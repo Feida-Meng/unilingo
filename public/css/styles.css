@@ -146,6 +146,14 @@ button:disabled {
 .chat__footer input {
   border: none;
   padding: 10px;
+
+}
+
+#msg-input {
+  flex-grow: 100;
+}
+
+#lan-output {
   flex-grow: 1;
 }
 

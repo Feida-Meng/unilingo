@@ -20,8 +20,14 @@
       <ol id="msgs" class="chat__messages"></ol>
 
       <div class="chat__footer">
+
+
         <form id="msg-form" action="index.html" method="post">
           <input id="msg-input" name="msg" type="text" placeholder="Message" autofocus autocomplete="off">
+          <input id="lan-output" list="lan-list" name="lan-list" type="text" placeholder="Output Language" >
+          <datalist id="lan-list">
+            <option value="Chinese"> Chinese </option>
+          </datalist>
           <button class="submit">Send</button>
         </form>
 

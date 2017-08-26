@@ -98,11 +98,15 @@ socket.on('showTyping', function(id) {
   }
 });
 
+//---------------------create msg---------------------
 $('#msg-form').on('submit', function(e) {
   e.preventDefault();
   var msgTextBox = $('#msg-input');
+  var lanSelectionBox = $('#lan-output');
+  console.log('lan: ', lanSelectionBox.val())
   socket.emit('createMsg',{
-    text: msgTextBox.val()
+    text: msgTextBox.val(),
+    lan: lanSelectionBox.val()
   }, function(msg) {
     msgTextBox.val('');
   });

@@ -27,6 +27,8 @@ socket.on('connect',function() {
   });
 });
 
+
+
 socket.on('newMsg',function (newMsg) {
   var formattedTime = moment(newMsg.createdAt).format('h:mm a');
   var template = newMsg.from !== "Admin" ? $('#user-msg-template').html() : $('#admin-msg-template').html();
@@ -98,11 +100,20 @@ socket.on('showTyping', function(id) {
   }
 });
 
+//--------------------lan list----------------------------
+socket.on("lanList",function(lanList) {
+  console.log(lanList);
+  for(var lan in lanList) {
+    $("#lan-list").append($("<option class=lan-Opt></option>").attr("value",lanList[lan]).text(lanList[lan]));
+  }
+
+});
+
 //---------------------create msg---------------------
 $('#msg-form').on('submit', function(e) {
   e.preventDefault();
   var msgTextBox = $('#msg-input');
-  var lanSelectionBox = $('#lan-output');
+  var lanSelectionBox = $('#lan-list');
   console.log('lan: ', lanSelectionBox.val())
   socket.emit('createMsg',{
     text: msgTextBox.val(),

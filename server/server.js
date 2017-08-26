@@ -24,6 +24,8 @@ io.on("connection", (socket) => {
       return callback('Name and room name are required');
     }
 
+    console.log(langs);
+    socket.emit('lanList',langs); // send lang list to chat.js
     socket.join(params.room);
     users.removeUser(socket.id);
     users.addUser(socket.id,params.name, params.room);
@@ -50,7 +52,7 @@ io.on("connection", (socket) => {
   });
 
 
-//---------------------created msg-------------------------
+//---------------------create msg-------------------------
   socket.on('createMsg', (msg, callback) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(msg.text)) {
@@ -71,7 +73,6 @@ io.on("connection", (socket) => {
     }
 
   });
-
 
 //---------------------disconnect-----------------------
   socket.on('disconnect', () => {

@@ -148,6 +148,6 @@ function isSupported(desiredLang) {
     return Boolean(getCode(desiredLang));
 }
 
-module.exports = langs;
-module.exports.isSupported = isSupported;
-module.exports.getCode = getCode;
+module.exports = {langs, isSupported, getCode};
+// module.exports.isSupported = isSupported;
+// module.exports.getCode = getCode;

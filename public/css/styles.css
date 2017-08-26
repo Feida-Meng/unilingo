@@ -153,8 +153,15 @@ button:disabled {
   flex-grow: 100;
 }
 
-#lan-output {
+#lan-list {
   flex-grow: 1;
+  text-align: center;
+  text-align-last: center;
+}
+
+.lan-Opt {
+  text-align: left;
+  /* reset to left*/
 }
 
 .chat__messages {
@@ -199,4 +206,10 @@ button:disabled {
   .chat__footer button {
     margin-right: 0px;
   }
+}
+
+select {
+  text-align: center;
+  text-align-last: center;
+  /* webkit*/
 }

@@ -36,7 +36,6 @@ socket.on('newMsg',function (newMsg) {
     text: newMsg.text,
     from: newMsg.from,
     createdAt: formattedTime,
-    imgSrc: imgSrc
   });
 
   $('#msgs').append(html);
@@ -78,6 +77,7 @@ $('#msg-input').keyup(function() {
 //---------------hide Typing--------------------
 socket.on("hideTyping",function(id) {
   if ($("#i"+id).length > 0) {
+
     $("#i"+id).remove();
   }
 });

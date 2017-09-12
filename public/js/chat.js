@@ -102,7 +102,6 @@ socket.on('showTyping', function(id) {
 
 //--------------------lan list----------------------------
 socket.on("lanList",function(lanList) {
-  console.log(lanList);
   for(var lan in lanList) {
     $("#lan-list").append($("<option class=lan-Opt></option>").attr("value",lanList[lan]).text(lanList[lan]));
   }
@@ -114,7 +113,6 @@ $('#msg-form').on('submit', function(e) {
   e.preventDefault();
   var msgTextBox = $('#msg-input');
   var lanSelectionBox = $('#lan-list');
-  console.log('lan: ', lanSelectionBox.val())
   socket.emit('createMsg',{
     text: msgTextBox.val(),
     lan: lanSelectionBox.val()

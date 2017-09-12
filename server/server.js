@@ -24,7 +24,6 @@ io.on("connection", (socket) => {
       return callback('Name and room name are required');
     }
 
-    console.log(langs);
     socket.emit('lanList',langs); // send lang list to chat.js
     socket.join(params.room);
     users.removeUser(socket.id);

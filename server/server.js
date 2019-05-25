@@ -55,9 +55,16 @@ io.on("connection", (socket) => {
   socket.on('createMsg', (msg, callback) => {
     let user = users.getUser(socket.id);
     if (user && isRealString(msg.text)) {
-      translate(msg.text, {to: getCode(msg.lan)}).then(res => {
+
+      console.log("msg.text", msg.text);
+      console.log("msg.lan", msg.lan);
+      console.log("getCode(msg.lan)", getCode(msg.lan));
+
+      translate(msg.text, {to: msg.lan ? getCode(msg.lan) : 'en'}).then(res => {
         io.to(user.room).emit('newMsg',generateMsg(user.name, res.text));
       }).catch(err => {
+		  io.to(user.room).emit('newMsg',generateMsg(user.name, msg.text));
+          console.log("error");
           console.error(err);
       });
     }
